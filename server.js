@@ -92,7 +92,7 @@ router.put('/events/:id', (req, res) => {
 
 });
 
-//User router: get, get by id, delete id, create 
+//User router: get, get by id, delete id, create(post) user, update(put) user
 
 router.get('/users', (req, res) => {
     User.find()
@@ -129,6 +129,20 @@ router.post('/users', (req, res) => {
 	.then((user) => {
 	  	return res.json(user);
 	});
+});
+
+router.put('/users/:id', (req, res) => {
+
+	User.findOne({id:req.params.id})
+	.then((user) => {
+		var data = req.body;
+		Object.assign(user,data);
+		return event.save()	
+	})
+	.then((user) => {
+		return res.json(user);
+	});	
+
 });
 
 
