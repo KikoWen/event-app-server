@@ -6,6 +6,7 @@ var cors = require('cors');
 // var fileUpload = require('express-fileupload');
 var Event = require('./event-model');
 var Category = require('./category-model');
+var User = require('./user-model');
 
 
 
@@ -27,6 +28,8 @@ app.use(express.static('public'))
 
 var router = express.Router();
 
+
+// Category Router: get category
 router.get('/categories', (req, res) => {
     Category.find()
     .then((categories)=>{
@@ -34,9 +37,8 @@ router.get('/categories', (req, res) => {
     });
 })
 
-router.get('/testing', (req, res) => {
-    res.send('<h1>Testing is working</h1>')
-  })
+
+//Event Router: get events, get event by id, update (put) event, create (post) event
 
 router.get('/events', (req, res) => {
     Event.find()
@@ -44,6 +46,8 @@ router.get('/events', (req, res) => {
         return res.json(events);
     });
 })
+
+
 router.get('/events/:id', (req, res) => {
 
 	Event.findOne({id:req.params.id})
@@ -64,19 +68,6 @@ router.post('/events', (req, res) => {
 	.then((event) => {
 	  	return res.json(event);
 	});
-});
-
-router.post('/upload', (req, res) => {
-
-	var files = Object.values(req.files); 
-    var uploadedFile = files[0]; 
-    
-	var newName = Date.now() + uploadedFile.name;
-
-	uploadedFile.mv('public/' + newName,function (){
-		res.send(newName);
-	})
-
 });
 
 router.delete('/events/:id', (req, res) => {
@@ -100,6 +91,63 @@ router.put('/events/:id', (req, res) => {
 	});	
 
 });
+
+//User router: get, get by id, delete id, create 
+
+router.get('/users', (req, res) => {
+    User.find()
+    .then((users)=>{
+        return res.json(users);
+    });
+})
+
+router.get('/users/:id', (req, res) => {
+
+	User.findOne({id:req.params.id})
+	.then((user) => {
+	    return res.json(user);
+	});
+})
+
+router.delete('/users/:id', (req, res) => {
+
+	User.deleteOne({ id: req.params.id })
+	.then(() => {
+		return res.json('deleted');
+	});
+});
+
+router.post('/users', (req, res) => {
+
+	var user = new User();
+	user.id = Date.now();
+	
+	var data = req.body; 
+	Object.assign(project,data); 
+	
+	user.save()
+	.then((user) => {
+	  	return res.json(user);
+	});
+});
+
+
+// Upload Photo Router
+
+router.post('/upload', (req, res) => {
+
+	var files = Object.values(req.files); 
+    var uploadedFile = files[0]; 
+    
+	var newName = Date.now() + uploadedFile.name;
+
+	uploadedFile.mv('public/' + newName,function (){
+		res.send(newName);
+	})
+
+});
+
+
 
 
 
