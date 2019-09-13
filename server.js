@@ -3,7 +3,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
 var cors = require('cors');
-// var fileUpload = require('express-fileupload');
+var fileUpload = require('express-fileupload');
 var Event = require('./event-model');
 var Category = require('./category-model');
 var User = require('./user-model');
@@ -22,12 +22,12 @@ var app = express();
 app.use(cors());
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(fileUpload());
 app.use(logger('dev'));
 
 app.use(express.static('public'))
 
 var router = express.Router();
-
 
 // Category Router: get category
 router.get('/categories', (req, res) => {
@@ -62,7 +62,7 @@ router.post('/events', (req, res) => {
 	event.id = Date.now();
 	
 	var data = req.body; 
-	Object.assign(project,data); 
+	Object.assign(event,data); 
 	
 	event.save()
 	.then((event) => {
