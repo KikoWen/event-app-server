@@ -104,6 +104,7 @@ router.get('/users', (req, res) => {
 router.get('/users/:id', (req, res) => {
 
 	User.findOne({id:req.params.id})
+	.populate('bookmarks')
 	.then((user) => {
 	    return res.json(user);
 	});
@@ -129,6 +130,11 @@ router.post('/users', (req, res) => {
 	.then((user) => {
 	  	return res.json(user);
 	});
+});
+
+router.post('/users/:id/savedEvents', (req, res) => {
+
+	console.log('todo later')
 });
 
 router.put('/users/:id', (req, res) => {
