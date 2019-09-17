@@ -161,6 +161,18 @@ router.post('/upload', (req, res) => {
 
 });
 
+// Login features
+
+router.post('/authenticate', (req, res) => {
+
+	console.log('Hi');
+	var {username,password} = req.body;
+	var credential = {username,password}
+	User.findOne(credential)
+	.then((user) => {
+	    return res.json(user);
+	});
+})
 
 
 
