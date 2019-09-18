@@ -124,7 +124,7 @@ router.post('/users', (req, res) => {
 	user.id = Date.now();
 	
 	var data = req.body; 
-	Object.assign(project,data); 
+	Object.assign(user,data); 
 	
 	user.save()
 	.then((user) => {
@@ -143,7 +143,7 @@ router.put('/users/:id', (req, res) => {
 	.then((user) => {
 		var data = req.body;
 		Object.assign(user,data);
-		return event.save()	
+		return user.save()	
 	})
 	.then((user) => {
 		return res.json(user);
