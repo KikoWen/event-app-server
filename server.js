@@ -141,10 +141,31 @@ router.post('/users', (req, res) => {
 	});
 });
 
-router.post('/users/:id/savedEvents', (req, res) => {
+router.post('/users/:id/saved-events', (req, res) => {
 
-	console.log('todo later')
-});
+	var data = req.body
+	var eventId = data.eventid	
+	User.findOne({id:req.params.id})
+	.then((user) => {
+		user.savedEvents.push(eventId)
+		user.save()
+		
+		.then((user) => {
+			
+			User.findOne({id:req.params.id})
+			.populate('bookmarks')
+			.then((user) => {
+				return res.json(user);
+			})
+		})
+	})
+})
+
+router.delete('/users/:id/saved-events/:eventid', (req, res) => {
+
+
+	console.log('hi')
+})
 
 router.put('/users/:id', (req, res) => {
 
