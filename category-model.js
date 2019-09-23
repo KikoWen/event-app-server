@@ -7,6 +7,7 @@ var CategorySchema = new Schema(
   {
     id: Number,
     name: String,
+    color: String,
   },
   { timestamps: true,toJSON: { virtuals: true } }
 );
