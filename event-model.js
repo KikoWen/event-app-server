@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var Review = require('./review-model');
 
 // this will be our data base's data structure 
 var EventSchema = new Schema(
@@ -13,12 +14,19 @@ var EventSchema = new Schema(
     location: String,
     time: String,
     photo:String,
-    review: String,
     category: String
     
   },
-  { timestamps: true }
-);
+  { timestamps: true, toJSON: { virtuals: true } }
+)
+
+EventSchema.virtual('reviews', {
+  ref: 'Review', // The model to use
+  localField: 'id', // Find people where `localField`
+  foreignField: 'event_id', // is equal to `foreignField`
+  justOne: false
+
+})
 
 // export the new Schema so we could modify it using Node.js
 module.exports = mongoose.model('Event', EventSchema);

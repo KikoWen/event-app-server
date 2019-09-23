@@ -7,6 +7,7 @@ var fileUpload = require('express-fileupload');
 var Event = require('./event-model');
 var Category = require('./category-model');
 var User = require('./user-model');
+var Review = require('./review-model');
 
 
 
@@ -33,7 +34,8 @@ var router = express.Router();
 router.get('/categories', (req, res) => {
     Category.find()
     .then((categories)=>{
-        return res.json(categories);
+		return res.json(categories);
+		
     });
 })
 
@@ -51,7 +53,9 @@ router.get('/events', (req, res) => {
 router.get('/events/:id', (req, res) => {
 
 	Event.findOne({id:req.params.id})
+	.populate('reviews')
 	.then((event) => {
+		console.log(event)
 	    return res.json(event);
 	});
 })
@@ -170,6 +174,31 @@ router.put('/users/:id', (req, res) => {
 		return res.json(user);
 	});	
 
+});
+
+// Router comment section
+
+
+router.post('/reviews', (req, res) => {
+
+	var review = new Review();
+	review.id = Date.now();
+	
+	var data = req.body;
+	Object.assign(review,data);
+	
+	review.save()
+	.then((review) => {
+	  	return res.json(review);
+	});
+});
+
+router.delete('/reviews/:id', (req, res) => {
+
+	Review.deleteOne({ id: req.params.id })
+	.then(() => {
+		return res.json('deleted');
+	});
 });
 
 
