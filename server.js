@@ -62,7 +62,10 @@ router.get('/events', (req, res) => {
 router.get('/events/:id', (req, res) => {
 
 	Event.findOne({id:req.params.id})
-	.populate('reviews')
+	.populate({
+		path:'reviews',
+		populate:'user'
+	})
 	.then((event) => {
 		console.log(event)
 	    return res.json(event);
