@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Review = require('./review-model');
+var Category = require('./category-model');
 
 // this will be our data base's data structure 
 var EventSchema = new Schema(
@@ -14,8 +15,6 @@ var EventSchema = new Schema(
     location: String,
     time: String,
     photo:String,
-    category: String
-    
   },
   { timestamps: true, toJSON: { virtuals: true } }
 )
@@ -25,6 +24,13 @@ EventSchema.virtual('reviews', {
   localField: 'id', // Find people where `localField`
   foreignField: 'event_id', // is equal to `foreignField`
   justOne: false
+
+})
+EventSchema.virtual('category', {
+  ref: 'Category', // The model to use
+  localField: 'cat_id', // Find people where `localField`
+  foreignField: 'id', // is equal to `foreignField`
+  justOne: true
 
 })
 

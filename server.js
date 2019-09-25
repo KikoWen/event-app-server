@@ -43,7 +43,10 @@ router.get('/categories', (req, res) => {
 router.get('/categories/:id', (req, res) => {
 
 	Category.findOne({id:req.params.id})
-	.populate('events')
+	.populate({
+		path:'events',
+		populate: 'category'
+	})
 	.then((category) => {
 	    return res.json(category);
 	});
@@ -52,7 +55,8 @@ router.get('/categories/:id', (req, res) => {
 //Event Router: get events, get event by id, update (put) event, create (post) event
 
 router.get('/events', (req, res) => {
-    Event.find()
+	Event.find()
+	.populate('category')
     .then((events)=>{
         return res.json(events);
     });
