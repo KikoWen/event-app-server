@@ -222,14 +222,20 @@ router.delete('/reviews/:id', (req, res) => {
 
 router.post('/upload', (req, res) => {
 
-	var files = Object.values(req.files); 
-    var uploadedFile = files[0]; 
-    
-	var newName = Date.now() + uploadedFile.name;
+	if(req.files){
+		var files = Object.values(req.files); 
+		var uploadedFile = files[0]; 
+		
+		var newName = Date.now() + uploadedFile.name;
+	
+		uploadedFile.mv('public/' + newName,function (){
+			res.send(newName);
+		})
+	}else{
+		res.send('');
 
-	uploadedFile.mv('public/' + newName,function (){
-		res.send(newName);
-	})
+	}
+
 
 });
 

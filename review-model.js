@@ -7,7 +7,8 @@ var ReviewSchema = new Schema(
 	{
 	    id: Number,
 	    title: String,
-	    comment: String,
+		comment: String,
+		review_id: Number,
 	    user_id: Number,
 	    event_id: Number,
    	},
